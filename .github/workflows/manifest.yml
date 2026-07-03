@@ -1,0 +1,32 @@
+name: Generate image manifest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/images/**' # 이미지 폴더가 바뀔 때만 실행
+
+permissions:
+  contents: write # manifest.json을 커밋하기 위해 필요
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate manifest.json
+        run: node scripts/generate-manifest.js
+
+      - name: Commit manifest if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/manifest.json
+          # 변경사항이 있을 때만 커밋
+          git diff --cached --quiet || git commit -m "chore: manifest.json 자동 갱신"
+          git push
