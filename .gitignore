@@ -1,0 +1,19 @@
+# ── API 키 (절대 커밋 금지) ──────────────────
+.env
+.env.*
+*.key
+
+# ── OS / 에디터 ──────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# ── Node ─────────────────────────────────────
+node_modules/
+npm-debug.log*
+
+# ── 로컬 작업용 (필요시 주석 해제) ─────────────
+# sentences.txt        # 문장 목록을 기록으로 남기고 싶으면 커밋해도 됨
+# assets/manifest.json # Actions가 자동 생성하므로 로컬 것을 무시하고 싶다면
