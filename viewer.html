@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Gallery Viewer</title>
+    <link rel="stylesheet" href="assets/css/pages.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- 표지 -->
+    <section id="cover" class="screen">
+      <div class="eyebrow">Photo Album</div>
+      <h1 id="coverTitle">GALLERY<span class="dot">.</span></h1>
+      <p class="subtitle" id="coverSub">무작위로 섞어서, 한 장씩</p>
+      <button class="start" id="startBtn">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="16 3 21 3 21 8" />
+          <line x1="4" y1="20" x2="21" y2="3" />
+          <polyline points="21 16 21 21 16 21" />
+          <line x1="15" y1="15" x2="21" y2="21" />
+          <line x1="4" y1="4" x2="9" y2="9" />
+        </svg>
+        사진 보기
+      </button>
+      <div class="count-note" id="countNote">불러오는 중…</div>
+    </section>
+
+    <!-- 뷰어 -->
+    <section id="viewer" class="screen" hidden>
+      <div class="topbar">
+        <div class="counter">
+          <b id="cur">1</b> <span>/ <span id="total">1</span></span>
+        </div>
+        <div class="tools">
+          <button class="icon-btn" id="shuffleBtn" title="다시 섞기">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="16 3 21 3 21 8" />
+              <line x1="4" y1="20" x2="21" y2="3" />
+              <polyline points="21 16 21 21 16 21" />
+              <line x1="15" y1="15" x2="21" y2="21" />
+              <line x1="4" y1="4" x2="9" y2="9" />
+            </svg>
+          </button>
+          <button class="icon-btn" id="stripBtn" title="목록 보기">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="4" width="4" height="16" rx="1" />
+              <rect x="10" y="4" width="4" height="16" rx="1" />
+              <rect x="17" y="4" width="4" height="16" rx="1" />
+            </svg>
+          </button>
+          <button class="icon-btn" id="homeBtn" title="처음으로">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="stage" id="stage">
+        <button class="nav-zone prev" id="prevZone" aria-label="이전">
+          <span class="chev"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6" /></svg
+          ></span>
+        </button>
+        <div class="spinner" id="spinner"></div>
+        <img id="photo" alt="" />
+        <button class="nav-zone next" id="nextZone" aria-label="다음">
+          <span class="chev"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6" /></svg
+          ></span>
+        </button>
+      </div>
+
+      <div class="bottom">
+        <div class="progress"><div class="bar" id="bar"></div></div>
+        <div class="filmstrip" id="filmstrip" hidden></div>
+        <div class="hint">← → 방향키 · 스와이프 · Esc 나가기</div>
+      </div>
+    </section>
+
+    <script>
+      (async function () {
+        // ── 1. URL에서 day 파라미터 읽기 (예: viewer.html?day=day01)
+        const params = new URLSearchParams(location.search);
+        const dayId = params.get('day');
+
+        // ── 2. manifest.json에서 해당 day의 이미지 목록 가져오기
+        let IMAGES = [];
+        let TITLE = 'GALLERY';
+        let SUBTITLE = '무작위로 섞어서, 한 장씩';
+
+        try {
+          const res = await fetch('assets/manifest.json', {
+            cache: 'no-store',
+          });
+          const manifest = await res.json();
+          const day = manifest.days.find((d) => d.id === dayId);
+
+          if (!day) {
+            document.getElementById('countNote').textContent =
+              dayId
+                ? `"${dayId}" 폴더를 찾을 수 없습니다.`
+                : 'day 파라미터가 없습니다. 메인에서 선택해 주세요.';
+            document.getElementById('startBtn').disabled = true;
+            return;
+          }
+
+          IMAGES = day.images;
+          TITLE = day.title;
+        } catch (e) {
+          document.getElementById('countNote').textContent =
+            'manifest.json을 불러오지 못했습니다.';
+          document.getElementById('startBtn').disabled = true;
+          return;
+        }
+
+        // ── 3. 아래부터는 기존 뷰어 로직 그대로
+        document.getElementById('coverTitle').firstChild.textContent = TITLE;
+        document.getElementById('coverSub').textContent = SUBTITLE;
+        document.getElementById('countNote').textContent =
+          IMAGES.length + '장';
+        document.title = TITLE + ' — Gallery';
+
+        const $ = (id) => document.getElementById(id);
+        const cover = $('cover'),
+          viewer = $('viewer');
+        const photo = $('photo'),
+          stage = $('stage');
+        const spinner = $('spinner');
+        const filmstrip = $('filmstrip');
+        let order = [];
+        let pos = 0;
+        let stripBuilt = false;
+        const cache = {};
+        let token = 0;
+
+        function shuffle() {
+          order = IMAGES.map((_, i) => i);
+          for (let i = order.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [order[i], order[j]] = [order[j], order[i]];
+          }
+          stripBuilt = false;
+          filmstrip.innerHTML = '';
+        }
+
+        function getImg(url) {
+          if (cache[url]) return cache[url];
+          const im = new Image();
+          im.decoding = 'async';
+          im.src = url;
+          cache[url] = im;
+          return im;
+        }
+        function preload(i) {
+          const idx = order[i];
+          if (idx !== undefined) getImg(IMAGES[idx]);
+        }
+
+        function preloadAll() {
+          let i = 0;
+          const CONCURRENCY = 3;
+          function next() {
+            if (i >= order.length) return;
+            const url = IMAGES[order[i++]];
+            const im = getImg(url);
+            if (im.complete) next();
+            else {
+              im.addEventListener('load', next, { once: true });
+              im.addEventListener('error', next, { once: true });
+            }
+          }
+          for (let k = 0; k < CONCURRENCY; k++) next();
+        }
+
+        function render() {
+          const idx = order[pos];
+          const url = IMAGES[idx];
+          const my = ++token;
+          const im = getImg(url);
+
+          const show = () => {
+            if (my !== token) return;
+            photo.src = url;
+            photo.classList.remove('loading');
+            spinner.classList.remove('show');
+          };
+
+          if (im.complete && im.naturalWidth) {
+            show();
+          } else {
+            photo.classList.add('loading');
+            spinner.classList.add('show');
+            im.addEventListener('load', show, { once: true });
+            im.addEventListener(
+              'error',
+              () => {
+                if (my !== token) return;
+                spinner.classList.remove('show');
+                photo.classList.remove('loading');
+                photo.alt = '사진을 불러올 수 없습니다: ' + url;
+              },
+              { once: true },
+            );
+          }
+
+          $('cur').textContent = pos + 1;
+          $('total').textContent = order.length;
+          $('bar').style.width = ((pos + 1) / order.length) * 100 + '%';
+
+          preload((pos + 1) % order.length);
+          preload((pos - 1 + order.length) % order.length);
+
+          updateStripActive();
+        }
+
+        function go(delta) {
+          if (order.length === 0) return;
+          pos = (pos + delta + order.length) % order.length;
+          render();
+        }
+
+        function start() {
+          shuffle();
+          pos = 0;
+          cover.hidden = true;
+          viewer.hidden = false;
+          render();
+          preloadAll();
+        }
+
+        function buildStrip() {
+          filmstrip.innerHTML = '';
+          order.forEach((idx, i) => {
+            const t = new Image();
+            t.src = IMAGES[idx];
+            t.loading = 'lazy';
+            t.dataset.i = i;
+            t.addEventListener('click', () => {
+              pos = i;
+              render();
+            });
+            filmstrip.appendChild(t);
+          });
+          stripBuilt = true;
+          updateStripActive();
+        }
+        function updateStripActive() {
+          if (filmstrip.hidden) return;
+          const imgs = filmstrip.children;
+          for (let i = 0; i < imgs.length; i++)
+            imgs[i].classList.toggle('active', i === pos);
+          const active = imgs[pos];
+          if (active)
+            active.scrollIntoView({ inline: 'center', block: 'nearest' });
+        }
+
+        $('startBtn').addEventListener('click', start);
+        $('prevZone').addEventListener('click', () => go(-1));
+        $('nextZone').addEventListener('click', () => go(1));
+        $('shuffleBtn').addEventListener('click', () => {
+          shuffle();
+          pos = 0;
+          render();
+          if (!filmstrip.hidden) buildStrip();
+        });
+        // 홈 버튼: 메인 페이지로 이동 (표지가 아니라 index로)
+        $('homeBtn').addEventListener('click', () => {
+          location.href = 'index.html';
+        });
+        $('stripBtn').addEventListener('click', (e) => {
+          filmstrip.hidden = !filmstrip.hidden;
+          e.currentTarget.classList.toggle('on', !filmstrip.hidden);
+          if (!filmstrip.hidden && !stripBuilt) buildStrip();
+          updateStripActive();
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (viewer.hidden) return;
+          if (e.key === 'ArrowRight') go(1);
+          else if (e.key === 'ArrowLeft') go(-1);
+          else if (e.key === 'Escape') {
+            viewer.hidden = true;
+            cover.hidden = false;
+          }
+        });
+
+        let sx = 0,
+          sy = 0,
+          moved = false;
+        stage.addEventListener(
+          'touchstart',
+          (e) => {
+            sx = e.touches[0].clientX;
+            sy = e.touches[0].clientY;
+            moved = false;
+          },
+          { passive: true },
+        );
+        stage.addEventListener(
+          'touchmove',
+          () => {
+            moved = true;
+          },
+          { passive: true },
+        );
+        stage.addEventListener(
+          'touchend',
+          (e) => {
+            if (!moved) return;
+            const dx = e.changedTouches[0].clientX - sx;
+            const dy = e.changedTouches[0].clientY - sy;
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+              go(dx < 0 ? 1 : -1);
+            }
+          },
+          { passive: true },
+        );
+      })();
+    </script>
+  </body>
+</html>

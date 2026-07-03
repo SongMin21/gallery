@@ -6,46 +6,15 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <title>TEST</title>
-
-    <!-- ==========================================================
-     여기 아래 배열에만 사진을 계속 추가하면 됩니다.
-     - 같은 폴더의 images/ 안에 사진을 넣고 파일명만 적으면 됩니다.
-       예)  "images/sea.jpg",
-     - 인터넷 주소(URL)도 그대로 넣을 수 있습니다.
-     쉼표(,) 빼먹지 않게 주의하세요!
-     지금은 예시 사진 몇 장이 들어있습니다. 지우고 내 사진으로 바꾸세요.
-     ========================================================== -->
-    <script>
-      const IMAGES = [
-        'images/cafe.png',
-        'images/cafeteria.png',
-        'images/clothing_store.png',
-        'images/construction_site.png',
-        'images/indoors.png',
-        'images/laboratory.png',
-        'images/library.png',
-        'images/office.png',
-        'images/outdoors.png',
-        'images/park.png',
-        'images/restaurant.png',
-        'images/street.png',
-        'images/warehouse.png',
-      ];
-
-      // 표지에 보일 제목 (원하는 대로 수정)
-      const TITLE = 'TEST';
-      const SUBTITLE = '무작위로 섞어서, 한 장씩';
-    </script>
-
+    <title>Gallery</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
-
     <style>
+      /* pages.css와 같은 토큰 — 메인 페이지는 스크롤이 필요해서 독립 스타일 */
       :root {
         --bg: #0c0c0e;
         --text: #f4f2ec;
@@ -56,25 +25,20 @@
         --sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
         --mono: 'Space Mono', ui-monospace, monospace;
       }
-
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
       }
-      html,
-      body {
-        height: 100%;
-      }
       body {
         background: var(--bg);
         color: var(--text);
         font-family: var(--sans);
-        overflow: hidden;
+        min-height: 100dvh;
         -webkit-tap-highlight-color: transparent;
+        animation: fade 0.6s ease;
       }
-
-      /* faint darkroom vignette */
+      /* 다크룸 비네트 (뷰어와 동일) */
       body::after {
         content: '';
         position: fixed;
@@ -88,24 +52,15 @@
         );
       }
 
-      .screen {
-        position: fixed;
-        inset: 0;
-        display: flex;
-      }
-      [hidden] {
-        display: none !important;
+      .wrap {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: clamp(48px, 10vh, 110px) 24px 80px;
       }
 
-      /* ---------- 표지 ---------- */
-      #cover {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+      header {
         text-align: center;
-        gap: 26px;
-        padding: 32px;
-        animation: fade 0.6s ease;
+        margin-bottom: clamp(40px, 8vh, 72px);
       }
       .eyebrow {
         font-family: var(--mono);
@@ -113,287 +68,100 @@
         letter-spacing: 0.35em;
         text-transform: uppercase;
         color: var(--muted);
+        margin-bottom: 18px;
       }
-      #cover h1 {
-        font-size: clamp(48px, 12vw, 118px);
+      h1 {
+        font-size: clamp(48px, 12vw, 96px);
         font-weight: 500;
         letter-spacing: 0.04em;
         line-height: 0.95;
       }
-      #cover h1 .dot {
+      h1 .dot {
         color: var(--accent);
       }
-      .subtitle {
+      .meta {
+        margin-top: 18px;
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.1em;
         color: var(--muted);
-        font-size: clamp(14px, 3.4vw, 17px);
-        max-width: 32ch;
       }
 
-      .start {
-        margin-top: 12px;
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        background: var(--text);
-        color: #111;
-        border: none;
-        cursor: pointer;
-        font-family: var(--sans);
-        font-weight: 700;
-        font-size: 16px;
-        padding: 16px 30px;
-        border-radius: 999px;
+      /* ---------- 필름 인덱스 리스트 ---------- */
+      .index {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .row {
+        display: flex;
+        align-items: baseline;
+        gap: 18px;
+        text-decoration: none;
+        color: inherit;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px 24px;
         transition:
-          transform 0.15s ease,
-          box-shadow 0.25s ease;
-        box-shadow: 0 0 0 0 rgba(216, 162, 74, 0);
+          border-color 0.18s ease,
+          background 0.18s ease,
+          transform 0.15s ease;
       }
-      .start:hover {
+      .row:hover,
+      .row:focus-visible {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(216, 162, 74, 0.5);
         transform: translateY(-2px);
-        box-shadow: 0 14px 40px -12px rgba(216, 162, 74, 0.55);
+        outline: none;
       }
-      .start:active {
-        transform: translateY(0);
+      .row .no {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--accent);
+        letter-spacing: 0.1em;
+        min-width: 3ch;
       }
-      .start svg {
-        width: 18px;
-        height: 18px;
+      .row .name {
+        font-size: clamp(20px, 4.6vw, 26px);
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        flex: 1;
       }
-      .count-note {
+      .row .count {
         font-family: var(--mono);
         font-size: 12px;
         color: var(--muted);
         letter-spacing: 0.1em;
       }
-
-      /* ---------- 뷰어 ---------- */
-      #viewer {
-        flex-direction: column;
-        animation: fade 0.5s ease;
+      .row .arrow {
+        color: var(--muted);
+        transition: color 0.18s ease, transform 0.18s ease;
+      }
+      .row:hover .arrow {
+        color: var(--accent);
+        transform: translateX(3px);
+      }
+      .row .arrow svg {
+        width: 16px;
+        height: 16px;
+        display: block;
+        transform: translateY(2px);
       }
 
-      .topbar {
-        position: relative;
-        z-index: 6;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 16px 20px calc(16px + env(safe-area-inset-top));
-        padding-top: max(16px, env(safe-area-inset-top));
-        gap: 12px;
-      }
-      .counter {
+      .empty,
+      .error {
         font-family: var(--mono);
-        font-size: 14px;
-        letter-spacing: 0.12em;
-      }
-      .counter b {
-        color: var(--accent);
-        font-weight: 700;
-      }
-      .counter span {
+        font-size: 13px;
         color: var(--muted);
-      }
-      .tools {
-        display: flex;
-        gap: 8px;
-      }
-      .icon-btn {
-        display: grid;
-        place-items: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-        background: var(--panel);
-        border: 1px solid var(--line);
-        color: var(--text);
-        cursor: pointer;
-        transition:
-          background 0.18s ease,
-          border-color 0.18s ease,
-          transform 0.1s;
-      }
-      .icon-btn:hover {
-        background: rgba(255, 255, 255, 0.09);
-        border-color: rgba(255, 255, 255, 0.22);
-      }
-      .icon-btn:active {
-        transform: scale(0.94);
-      }
-      .icon-btn.on {
-        color: var(--accent);
-        border-color: rgba(216, 162, 74, 0.5);
-      }
-      .icon-btn svg {
-        width: 19px;
-        height: 19px;
-      }
-
-      .stage {
-        position: relative;
-        flex: 1;
-        min-height: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 8px 20px 20px;
-        overflow: hidden;
-        touch-action: pan-y;
-      }
-      .stage img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        border-radius: 6px;
-        box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.9);
-        user-select: none;
-        -webkit-user-drag: none;
-        transition: opacity 0.35s ease;
-      }
-      .stage img.loading {
-        opacity: 0;
-      }
-
-      /* 로딩 스피너 */
-      .spinner {
-        position: absolute;
-        z-index: 3;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        border: 3px solid rgba(255, 255, 255, 0.15);
-        border-top-color: var(--accent);
-        animation: spin 0.8s linear infinite;
-        opacity: 0;
-        transition: opacity 0.2s ease;
-        pointer-events: none;
-      }
-      .spinner.show {
-        opacity: 1;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      .empty {
-        color: var(--muted);
+        border: 1px dashed var(--line);
+        border-radius: 14px;
+        padding: 44px 24px;
         text-align: center;
-        font-size: 15px;
-        line-height: 1.6;
+        line-height: 2;
       }
       .empty code {
-        font-family: var(--mono);
         color: var(--accent);
-      }
-
-      /* 좌우 클릭 영역 */
-      .nav-zone {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 34%;
-        z-index: 4;
-        cursor: pointer;
-        border: none;
-        background: transparent;
-        display: flex;
-        align-items: center;
-        opacity: 0;
-        transition: opacity 0.2s ease;
-      }
-      .nav-zone:hover {
-        opacity: 1;
-      }
-      .nav-zone.prev {
-        left: 0;
-        justify-content: flex-start;
-        padding-left: 10px;
-        background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent);
-      }
-      .nav-zone.next {
-        right: 0;
-        justify-content: flex-end;
-        padding-right: 10px;
-        background: linear-gradient(270deg, rgba(0, 0, 0, 0.35), transparent);
-      }
-      .chev {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        background: rgba(0, 0, 0, 0.4);
-        border: 1px solid var(--line);
-      }
-      .chev svg {
-        width: 22px;
-        height: 22px;
-        color: #fff;
-      }
-
-      /* 하단 진행바 + 필름스트립 */
-      .bottom {
-        position: relative;
-        z-index: 6;
-        padding: 0 20px calc(18px + env(safe-area-inset-bottom));
-      }
-      .progress {
-        height: 2px;
-        background: rgba(255, 255, 255, 0.12);
-        border-radius: 2px;
-        overflow: hidden;
-      }
-      .progress .bar {
-        height: 100%;
-        width: 0;
-        background: var(--accent);
-        transition: width 0.35s ease;
-      }
-
-      .filmstrip {
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        padding: 14px 2px 4px;
-        scroll-behavior: smooth;
-        scrollbar-width: none;
-      }
-      .filmstrip::-webkit-scrollbar {
-        display: none;
-      }
-      .filmstrip img {
-        height: 56px;
-        width: 56px;
-        object-fit: cover;
-        border-radius: 8px;
-        flex: 0 0 auto;
-        cursor: pointer;
-        opacity: 0.45;
-        border: 2px solid transparent;
-        transition:
-          opacity 0.2s,
-          border-color 0.2s,
-          transform 0.15s;
-      }
-      .filmstrip img:hover {
-        opacity: 0.8;
-        transform: translateY(-2px);
-      }
-      .filmstrip img.active {
-        opacity: 1;
-        border-color: var(--accent);
-      }
-
-      .hint {
-        text-align: center;
-        font-family: var(--mono);
-        font-size: 11px;
-        color: var(--muted);
-        letter-spacing: 0.1em;
-        padding-top: 12px;
-        opacity: 0.7;
       }
 
       @keyframes fade {
@@ -410,363 +178,64 @@
           transition: none !important;
         }
       }
-      @media (max-width: 600px) {
-        .hint {
-          display: none;
-        }
-        .nav-zone {
-          opacity: 1;
-          background: transparent;
-        }
-        .nav-zone .chev {
-          background: rgba(0, 0, 0, 0.3);
-        }
-      }
     </style>
   </head>
   <body>
-    <!-- 표지 -->
-    <section id="cover" class="screen">
-      <div class="eyebrow">Photo Album</div>
-      <h1 id="coverTitle">GALLERY<span class="dot">.</span></h1>
-      <p class="subtitle" id="coverSub">무작위로 섞어서, 한 장씩</p>
-      <button class="start" id="startBtn">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <polyline points="16 3 21 3 21 8" />
-          <line x1="4" y1="20" x2="21" y2="3" />
-          <polyline points="21 16 21 21 16 21" />
-          <line x1="15" y1="15" x2="21" y2="21" />
-          <line x1="4" y1="4" x2="9" y2="9" />
-        </svg>
-        사진 보기
-      </button>
-      <div class="count-note" id="countNote">0장</div>
-    </section>
+    <div class="wrap">
+      <header>
+        <div class="eyebrow">Photo Album</div>
+        <h1>GALLERY<span class="dot">.</span></h1>
+        <p class="meta" id="meta">불러오는 중…</p>
+      </header>
 
-    <!-- 뷰어 -->
-    <section id="viewer" class="screen" hidden>
-      <div class="topbar">
-        <div class="counter">
-          <b id="cur">1</b> <span>/ <span id="total">1</span></span>
-        </div>
-        <div class="tools">
-          <button class="icon-btn" id="shuffleBtn" title="다시 섞기">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polyline points="16 3 21 3 21 8" />
-              <line x1="4" y1="20" x2="21" y2="3" />
-              <polyline points="21 16 21 21 16 21" />
-              <line x1="15" y1="15" x2="21" y2="21" />
-              <line x1="4" y1="4" x2="9" y2="9" />
-            </svg>
-          </button>
-          <button class="icon-btn" id="stripBtn" title="목록 보기">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="3" y="4" width="4" height="16" rx="1" />
-              <rect x="10" y="4" width="4" height="16" rx="1" />
-              <rect x="17" y="4" width="4" height="16" rx="1" />
-            </svg>
-          </button>
-          <button class="icon-btn" id="homeBtn" title="처음으로">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <div class="stage" id="stage">
-        <button class="nav-zone prev" id="prevZone" aria-label="이전">
-          <span class="chev"
-            ><svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polyline points="15 18 9 12 15 6" /></svg
-          ></span>
-        </button>
-        <div class="spinner" id="spinner"></div>
-        <img id="photo" alt="" />
-        <button class="nav-zone next" id="nextZone" aria-label="다음">
-          <span class="chev"
-            ><svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polyline points="9 18 15 12 9 6" /></svg
-          ></span>
-        </button>
-      </div>
-
-      <div class="bottom">
-        <div class="progress"><div class="bar" id="bar"></div></div>
-        <div class="filmstrip" id="filmstrip" hidden></div>
-        <div class="hint">← → 방향키 · 스와이프 · Esc 나가기</div>
-      </div>
-    </section>
+      <div class="index" id="list"></div>
+    </div>
 
     <script>
-      (function () {
-        // 표지 텍스트 적용
-        document.getElementById('coverTitle').firstChild.textContent = TITLE;
-        document.getElementById('coverSub').textContent = SUBTITLE;
-        document.getElementById('countNote').textContent = IMAGES.length + '장';
+      (async function () {
+        const list = document.getElementById('list');
+        const meta = document.getElementById('meta');
 
-        const $ = (id) => document.getElementById(id);
-        const cover = $('cover'),
-          viewer = $('viewer');
-        const photo = $('photo'),
-          stage = $('stage');
-        const spinner = $('spinner');
-        const filmstrip = $('filmstrip');
-        let order = []; // 섞인 순서 (IMAGES의 인덱스 배열)
-        let pos = 0; // 현재 위치
-        let stripBuilt = false;
-        const cache = {}; // url -> Image (한 번 받은 사진은 다시 안 받음)
-        let token = 0; // 빠르게 넘길 때 이전 로딩 무시용
-
-        // Fisher-Yates 셔플
-        function shuffle() {
-          order = IMAGES.map((_, i) => i);
-          for (let i = order.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [order[i], order[j]] = [order[j], order[i]];
-          }
-          stripBuilt = false;
-          filmstrip.innerHTML = '';
-        }
-
-        // 사진 하나를 미리 받아 캐시에 저장 (이미 있으면 재사용)
-        function getImg(url) {
-          if (cache[url]) return cache[url];
-          const im = new Image();
-          im.decoding = 'async';
-          im.src = url;
-          cache[url] = im;
-          return im;
-        }
-        function preload(i) {
-          const idx = order[i];
-          if (idx !== undefined) getImg(IMAGES[idx]);
-        }
-
-        // 전체 사진을 백그라운드에서 순서대로 미리 받아둠 (한 번에 3장씩)
-        function preloadAll() {
-          let i = 0;
-          const CONCURRENCY = 3;
-          function next() {
-            if (i >= order.length) return;
-            const url = IMAGES[order[i++]];
-            const im = getImg(url);
-            if (im.complete) next();
-            else {
-              im.addEventListener('load', next, { once: true });
-              im.addEventListener('error', next, { once: true });
-            }
-          }
-          for (let k = 0; k < CONCURRENCY; k++) next();
-        }
-
-        function render() {
-          const idx = order[pos];
-          const url = IMAGES[idx];
-          const my = ++token; // 이번 요청 표시
-          const im = getImg(url);
-
-          const show = () => {
-            if (my !== token) return; // 그새 다른 사진으로 넘어갔으면 무시
-            photo.src = url;
-            photo.classList.remove('loading');
-            spinner.classList.remove('show');
-          };
-
-          if (im.complete && im.naturalWidth) {
-            show(); // 이미 받아둔 사진 → 즉시 표시
-          } else {
-            photo.classList.add('loading'); // 아직이면 스피너
-            spinner.classList.add('show');
-            im.addEventListener('load', show, { once: true });
-            im.addEventListener(
-              'error',
-              () => {
-                if (my !== token) return;
-                spinner.classList.remove('show');
-                photo.classList.remove('loading');
-                photo.alt = '사진을 불러올 수 없습니다: ' + url;
-              },
-              { once: true },
-            );
-          }
-
-          $('cur').textContent = pos + 1;
-          $('total').textContent = order.length;
-          $('bar').style.width = ((pos + 1) / order.length) * 100 + '%';
-
-          // 바로 옆 사진은 우선 미리 받기
-          preload((pos + 1) % order.length);
-          preload((pos - 1 + order.length) % order.length);
-
-          updateStripActive();
-        }
-
-        function go(delta) {
-          if (order.length === 0) return;
-          pos = (pos + delta + order.length) % order.length; // 끝에서 처음으로 순환
-          render();
-        }
-
-        function start() {
-          if (IMAGES.length === 0) {
-            cover.hidden = true;
-            viewer.hidden = false;
-            stage
-              .querySelectorAll('.nav-zone')
-              .forEach((z) => (z.hidden = true));
-            photo.hidden = true;
-            if (!stage.querySelector('.empty')) {
-              const e = document.createElement('div');
-              e.className = 'empty';
-              e.innerHTML =
-                '아직 사진이 없어요.<br>파일 위쪽 <code>IMAGES</code> 목록에 사진을 추가하세요.';
-              stage.appendChild(e);
-            }
-            return;
-          }
-          shuffle();
-          pos = 0;
-          cover.hidden = true;
-          viewer.hidden = false;
-          render();
-          preloadAll(); // 나머지 사진들 백그라운드에서 미리 받기
-        }
-
-        // 필름스트립(목록) 만들기
-        function buildStrip() {
-          filmstrip.innerHTML = '';
-          order.forEach((idx, i) => {
-            const t = new Image();
-            t.src = IMAGES[idx];
-            t.loading = 'lazy';
-            t.dataset.i = i;
-            t.addEventListener('click', () => {
-              pos = i;
-              render();
-            });
-            filmstrip.appendChild(t);
+        let manifest;
+        try {
+          const res = await fetch('assets/manifest.json', {
+            cache: 'no-store',
           });
-          stripBuilt = true;
-          updateStripActive();
-        }
-        function updateStripActive() {
-          if (filmstrip.hidden) return;
-          const imgs = filmstrip.children;
-          for (let i = 0; i < imgs.length; i++)
-            imgs[i].classList.toggle('active', i === pos);
-          const active = imgs[pos];
-          if (active)
-            active.scrollIntoView({ inline: 'center', block: 'nearest' });
+          manifest = await res.json();
+        } catch (e) {
+          meta.textContent = '';
+          list.innerHTML =
+            '<div class="error">manifest.json을 불러올 수 없습니다.<br>' +
+            'node scripts/generate-manifest.js 를 먼저 실행했는지 확인하세요.</div>';
+          return;
         }
 
-        // 이벤트 연결
-        $('startBtn').addEventListener('click', start);
-        $('prevZone').addEventListener('click', () => go(-1));
-        $('nextZone').addEventListener('click', () => go(1));
-        $('shuffleBtn').addEventListener('click', () => {
-          shuffle();
-          pos = 0;
-          render();
-          if (!filmstrip.hidden) buildStrip();
-        });
-        $('homeBtn').addEventListener('click', () => {
-          viewer.hidden = true;
-          cover.hidden = false;
-        });
-        $('stripBtn').addEventListener('click', (e) => {
-          filmstrip.hidden = !filmstrip.hidden;
-          e.currentTarget.classList.toggle('on', !filmstrip.hidden);
-          if (!filmstrip.hidden && !stripBuilt) buildStrip();
-          updateStripActive();
-        });
+        const days = manifest.days || [];
+        const totalPhotos = days.reduce((s, d) => s + d.count, 0);
+        meta.textContent = days.length + ' ALBUMS · ' + totalPhotos + ' PHOTOS';
 
-        // 키보드
-        document.addEventListener('keydown', (e) => {
-          if (viewer.hidden) return;
-          if (e.key === 'ArrowRight') go(1);
-          else if (e.key === 'ArrowLeft') go(-1);
-          else if (e.key === 'Escape') {
-            viewer.hidden = true;
-            cover.hidden = false;
-          }
-        });
+        if (days.length === 0) {
+          list.innerHTML =
+            '<div class="empty">아직 앨범이 없어요.<br>' +
+            '<code>assets/images/day01/</code> 폴더에 사진을 넣으면<br>' +
+            '여기 자동으로 나타납니다.</div>';
+          return;
+        }
 
-        // 스와이프
-        let sx = 0,
-          sy = 0,
-          moved = false;
-        stage.addEventListener(
-          'touchstart',
-          (e) => {
-            sx = e.touches[0].clientX;
-            sy = e.touches[0].clientY;
-            moved = false;
-          },
-          { passive: true },
-        );
-        stage.addEventListener(
-          'touchmove',
-          () => {
-            moved = true;
-          },
-          { passive: true },
-        );
-        stage.addEventListener(
-          'touchend',
-          (e) => {
-            if (!moved) return;
-            const dx = e.changedTouches[0].clientX - sx;
-            const dy = e.changedTouches[0].clientY - sy;
-            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-              go(dx < 0 ? 1 : -1);
-            }
-          },
-          { passive: true },
-        );
+        days.forEach((day, i) => {
+          const a = document.createElement('a');
+          a.className = 'row';
+          a.href = 'viewer.html?day=' + encodeURIComponent(day.id);
+
+          const no = String(i + 1).padStart(2, '0');
+          a.innerHTML =
+            '<span class="no">' + no + '</span>' +
+            '<span class="name">' + day.title + '</span>' +
+            '<span class="count">' + day.count + ' 장</span>' +
+            '<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>';
+
+          list.appendChild(a);
+        });
       })();
     </script>
   </body>
