@@ -1,0 +1,42 @@
+{
+  "generated": "2026-07-03T04:02:12.152Z",
+  "days": [
+    {
+      "id": "day01",
+      "title": "DAY01",
+      "count": 13,
+      "images": [
+        "assets/images/day01/cafe.png",
+        "assets/images/day01/cafeteria.png",
+        "assets/images/day01/clothing_store.png",
+        "assets/images/day01/construction_site.png",
+        "assets/images/day01/indoors.png",
+        "assets/images/day01/laboratory.png",
+        "assets/images/day01/library.png",
+        "assets/images/day01/office.png",
+        "assets/images/day01/outdoors.png",
+        "assets/images/day01/park.png",
+        "assets/images/day01/restaurant.png",
+        "assets/images/day01/street.png",
+        "assets/images/day01/warehouse.png"
+      ]
+    },
+    {
+      "id": "day02",
+      "title": "DAY02",
+      "count": 10,
+      "images": [
+        "assets/images/day02/In_the_background_of_the_picture_I_can_see_many_buildings_and_trees.png",
+        "assets/images/day02/In_the_foreground_of_the_picture_I_can_see_a_lot_of_office_supplies_on_the_desk.jpg",
+        "assets/images/day02/In_the_middle_of_the_picture_there_is_a_fountain.jpg",
+        "assets/images/day02/Most_of_them_are_wearing_formal_clothes.jpg",
+        "assets/images/day02/Next_to_her_there_is_another_woman.png",
+        "assets/images/day02/On_the_left_side_of_the_picture_there_is_a_sidewalk.jpg",
+        "assets/images/day02/On_the_right_side_of_the_picture_there_is_a_large_window.jpg",
+        "assets/images/day02/Some_of_them_are_wearing_casual_clothes.png",
+        "assets/images/day02/The_first_thing_I_can_see_from_this_picture_is_three_men.jpg",
+        "assets/images/day02/The_first_thing_I_can_see_from_this_picture_is_two_women.jpg"
+      ]
+    }
+  ]
+}
