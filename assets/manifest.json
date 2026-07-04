@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-03T15:38:39.086Z",
+  "generated": "2026-07-04T15:32:24.785Z",
   "days": [
     {
       "id": "day01",
@@ -61,6 +61,26 @@
         "assets/images/day03/Generated Image July 04, 2026 - 12_27AM.jpg",
         "assets/images/day03/Generated Image July 04, 2026 - 12_28AM.jpg",
         "assets/images/day03/Generated Image July 04, 2026 - 12_29AM.jpg"
+      ]
+    },
+    {
+      "id": "day04",
+      "title": "DAY04",
+      "count": 13,
+      "images": [
+        "assets/images/day04/Generated Image July 05, 2026 - 12_25AM (3).jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_25AM (4).jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_25AM.jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_26AM (1).jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_26AM.jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_27AM (1).jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_27AM (2).jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_27AM (3).jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_27AM (4).jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_27AM.jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_28AM (1).jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_28AM (2).jpg",
+        "assets/images/day04/Generated Image July 05, 2026 - 12_28AM.jpg"
       ]
     }
   ]
