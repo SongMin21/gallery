@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-03T04:02:12.152Z",
+  "generated": "2026-07-03T15:38:39.086Z",
   "days": [
     {
       "id": "day01",
@@ -36,6 +36,31 @@
         "assets/images/day02/Some_of_them_are_wearing_casual_clothes.png",
         "assets/images/day02/The_first_thing_I_can_see_from_this_picture_is_three_men.jpg",
         "assets/images/day02/The_first_thing_I_can_see_from_this_picture_is_two_women.jpg"
+      ]
+    },
+    {
+      "id": "day03",
+      "title": "DAY03",
+      "count": 18,
+      "images": [
+        "assets/images/day03/Generated Image July 04, 2026 - 12_21AM (2).jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_21AM.jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_22AM (1).jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_22AM (2).jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_22AM.jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_23AM (1).jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_23AM.jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_24AM (1).jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_24AM (2).jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_24AM.jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_25AM (1).jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_25AM.jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_26AM.jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_27AM (1).jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_27AM (2).jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_27AM.jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_28AM.jpg",
+        "assets/images/day03/Generated Image July 04, 2026 - 12_29AM.jpg"
       ]
     }
   ]
