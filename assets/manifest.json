@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-07T12:39:57.873Z",
+  "generated": "2026-07-14T12:59:42.474Z",
   "days": [
     {
       "id": "day01",
@@ -193,6 +193,46 @@
         "assets/images/day10/Generated Image July 07, 2026 - 9_20PM (2).jpg",
         "assets/images/day10/Generated Image July 07, 2026 - 9_20PM (3).jpg",
         "assets/images/day10/Generated Image July 07, 2026 - 9_20PM.jpg"
+      ]
+    },
+    {
+      "id": "day11",
+      "title": "DAY11",
+      "count": 13,
+      "images": [
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (1).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (10).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (11).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (2).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (3).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (4).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (5).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (6).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (7).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (8).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM (9).jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_43PM.jpg",
+        "assets/images/day11/Generated Image July 14, 2026 - 9_44PM.jpg"
+      ]
+    },
+    {
+      "id": "day12",
+      "title": "DAY12",
+      "count": 13,
+      "images": [
+        "assets/images/day12/Generated Image July 14, 2026 - 9_46PM (1).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_46PM (2).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_46PM (3).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_46PM.jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_47PM (1).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_47PM (2).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_47PM (3).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_47PM (4).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_47PM (5).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_47PM (6).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_47PM (7).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_47PM (8).jpg",
+        "assets/images/day12/Generated Image July 14, 2026 - 9_47PM.jpg"
       ]
     }
   ]
